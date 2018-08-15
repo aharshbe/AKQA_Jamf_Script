@@ -60,7 +60,7 @@ function check_internet()
 	fi
 }
 
-# Connect to guest Wifi at work
+# Function to connect to guest Wifi at work
 function connect_to_guest()
 {
 	# Notify
@@ -73,7 +73,7 @@ function connect_to_guest()
 	check_internet
 }
 
-# Request sudo priveledges 
+# Function to request sudo priviledges 
 function ask_for_sudo()
 {
 	# Request user to enter sudo priv
@@ -83,7 +83,7 @@ function ask_for_sudo()
 	fi
 }
 
-# Troubleshoot Jamf
+# Function to troubleshoot Jamf
 function jamf_troubleshooter(){
 
 	# Open Console to view Jamf Policies
@@ -110,7 +110,7 @@ function jamf_troubleshooter(){
 	osascript -e 'quit app "Console"'
 }
 
-# Check for updates
+# Function to check for updates
 function check_updates()
 {
 	clear
@@ -126,7 +126,7 @@ function check_updates()
 	done
 }
 
-# Download self-serve profile from internet + run policy updates
+# Function to download self-serve profile from internet + run policy updates
 function jamf_selfserve()
 {
 		echo "Opening enrollment download in browser..."
@@ -159,11 +159,11 @@ function jamf_selfserve()
 
 }
 
-#Prompt with options
+# Function to prompt with options
 function prompt()
 {
 
-	#Display choices
+	# Display choices
 	echo ""
 	echo "Choose an option:"
 	echo "1. Test internet connection"
@@ -177,7 +177,7 @@ function prompt()
 	echo "9. Exit"
 	echo ""
 	
-	#Get user choice
+	# Get user choice
 	echo "-> Enter an option between (1) and (8) ...(9) to exit"
 	echo ""
 	read choice

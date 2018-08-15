@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # This script was created to help troubleshoot issues realted to jamf not loading properly
+# Created by Austin Harshberger (2018)
 
 # Function to check internet connection
 function test_internet()
@@ -73,7 +74,7 @@ function connect_to_guest()
 	check_internet
 }
 
-# Function to request sudo priviledges 
+# Function to request sudo privileges 
 function ask_for_sudo()
 {
 	# Request user to enter sudo priv

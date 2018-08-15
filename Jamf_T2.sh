@@ -60,6 +60,7 @@ function check_internet()
 	fi
 }
 
+# Connect to guest Wifi at work
 function connect_to_guest()
 {
 	# Notify
@@ -82,7 +83,7 @@ function ask_for_sudo()
 	fi
 }
 
-# Troubleshoot jamf
+# Troubleshoot Jamf
 function jamf_troubleshooter(){
 
 	# Open Console to view Jamf Policies
@@ -125,6 +126,7 @@ function check_updates()
 	done
 }
 
+# Download self-serve profile from internet + run policy updates
 function jamf_selfserve()
 {
 		echo "Opening enrollment download in browser..."

@@ -3,7 +3,7 @@
 * General troubleshooting and Jamf/Jss script for OSX provisioning
 
 ### Usage:
-* Clone repo, double-click script `troubleshooter`
+* Clone repo, open terminal and type `./tshooter`
 
 #### Author:
 * Austin Harshberger

@@ -196,6 +196,9 @@ function create_admin()
 	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
 	LOCAL_ADMIN_PASSWORD="C0mr@de$"      # The local admin user's password
 
+	# Add user image
+	sudo cp ~/Documents/Assets/user.png /Library/User\ Pictures
+
 	# Create a local admin user account
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME UserShell /bin/bash

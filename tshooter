@@ -206,7 +206,7 @@ function create_admin()
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME UniqueID 1001
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME PrimaryGroupID 81
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME NFSHomeDirectory /Local/Users/$LOCAL_ADMIN_SHORTNAME
-	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME Picture "~/Documents/Assets/user.png"
+	sudo dscl . create /Users/$LOCAL_ADMIN_SHORTNAME Picture "~/Documents/Assets/user.png"
 	
 	sudo dscl . -passwd /Users/$LOCAL_ADMIN_SHORTNAME $LOCAL_ADMIN_PASSWORD
 	sudo dscl . -append /Groups/admin GroupMembership $LOCAL_ADMIN_SHORTNAME

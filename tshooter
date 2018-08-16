@@ -160,6 +160,7 @@ function jamf_selfserve()
 
     # clean-up
     rm -rf ~/Downloads/enrollmentProfile.mobileconfig
+    osascript -e 'quit app "Safari"'
 
 }
 

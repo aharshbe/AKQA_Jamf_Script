@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was created to help troubleshoot issues realted to jamf not loading properly
+# This script was created to help troubleshoot issues realted to Jamf not loading properly
 # Created by Austin Harshberger (2018)
 
 # Function to check internet connection
@@ -52,9 +52,12 @@ function check_internet()
 	    echo "Computer Online"
 	else
 	    echo "Offline"
-	    echo "trying to fix..."
+	    echo ""
+	    echo "Trying to fix..."
+	    echo ""
 	    networksetup -setairportpower en0 off
-	    echo "turning on..."
+	    echo "Turning on..."
+	    echo ""
 	    networksetup -setairportpower en0 on
 	    sleep 5
 	    test_internet
@@ -87,21 +90,21 @@ function ask_for_sudo()
 # Function to troubleshoot Jamf
 function jamf_troubleshooter(){
 
-	# Open Console to view Jamf Policies
+	# Open Console to view Jamf policies
 	open /private/var/log/jamf.log
 
-	# Checking w/ Jamf to make sure all polocies are loaded
+	# Checking w/ Jamf to make sure all policies are loaded
 	sudo jamf policy &
 	PREV=$!
 
 	while kill -0 $PREV 2> /dev/null; do
 		echo "Checking Jamf"
 		clear
-	    echo "Checking Jamf plocies."
+	    echo "Checking Jamf policies."
 	    clear
-	    echo "Checking Jamf plocies for.."
+	    echo "Checking Jamf policies for.."
 	    clear
-	    echo "Checking Jamf plocies for updates..."
+	    echo "Checking Jamf policies for updates..."
 	done
 
 	clear
@@ -115,7 +118,7 @@ function jamf_troubleshooter(){
 function check_updates()
 {
 	clear
-	# Checking for and installing any macOS udpates
+	# Checking for and installing any macOS updates
 	softwareupdate -ai
 	while true; do
 	    read -p "Do any updates require restart? " yn
@@ -134,7 +137,7 @@ function jamf_selfserve()
 		echo ""
 		echo "!! Please consider running update and troubleshooter when download is complete. !!"
 		echo ""
-		sleep 5
+		sleep 2
 		open https://jamfpro.na.akqa.net:8443/enroll
 
 		while true; do
@@ -160,6 +163,20 @@ function jamf_selfserve()
 
 }
 
+# Restrict input to only be a number
+function only_number()
+{
+	if ! [[ "$choice" =~ ^[0-9]+$ ]]
+	    then
+	        echo "!! Please enter a number between 1-9 (In order to specify the action you want to perform)."
+	        echo ""
+	        sleep 2
+	       	clear
+	        continue
+
+	fi
+}
+
 # Function to prompt with options
 function prompt()
 {
@@ -181,7 +198,10 @@ function prompt()
 	# Get user choice
 	echo "-> Enter an option between (1) and (8) ...(9) to exit"
 	echo ""
+
 	read choice
+	only_number
+
 	echo ""
 
 	if [ $choice -eq 1 ]; then
@@ -202,6 +222,9 @@ function prompt()
 		clear && prompt
 	elif [ $choice -eq 9 ]; then
 		clear && exit 0
+	else
+		echo "!! Please enter a number between 1-9 (In order to specify the action you want to perform)."
+		echo ""
 	fi
 
 }
@@ -214,7 +237,7 @@ ask_for_sudo
 # Start prompt
 while true; do
 	prompt
-	sleep 3
+	sleep 1.5
 	clear
 done
 

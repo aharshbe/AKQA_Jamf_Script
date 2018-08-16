@@ -192,16 +192,19 @@ function info_page()
 # Create Admin account
 function create_admin()
 {
-	account_name="AKQA IT"
+	LOCAL_ADMIN_FULLNAME="AKQA IT"     # The local admin user's full name
+	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
+	LOCAL_ADMIN_PASSWORD="C0mr@de$"      # The local admin user's password
 
-	dscl . -create /Users/$account_name
-	dscl . -create /Users/$account_name UserShell /bin/bash
-	dscl . -create /Users/$account_name RealName "AKQA IT" 
-	dscl . -create /Users/$account_name UniqueID "510"
-	dscl . -create /Users/$account_name PrimaryGroupID 80
-	dscl . -create /Users/$account_name NFSHomeDirectory /Users/$account_name
-	dscl . -passwd /Users/$account_name password
-	dscl . -append /Groups/admin GroupMembership $account_name
+	# Create a local admin user account
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME UserShell /bin/bash
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME RealName $LOCAL_ADMIN_FULLNAME
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME UniqueID 1001
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME PrimaryGroupID 81
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME NFSHomeDirectory /Local/Users/$LOCAL_ADMIN_SHORTNAME
+	sudo dscl . -passwd /Users/$LOCAL_ADMIN_SHORTNAME $LOCAL_ADMIN_PASSWORD
+	sudo dscl . -append /Groups/admin GroupMembership $LOCAL_ADMIN_SHORTNAME
 
 	echo ""
 	echo "Must restart to take effect..."

@@ -170,7 +170,7 @@ function only_number()
 {
 	if ! [[ "$choice" =~ ^[0-9]+$ ]]
 	    then
-	        echo "!! Please enter a number between 1-9 (In order to specify the action you want to perform)."
+	        echo "!! Please enter a number between 0-10 (In order to specify the action you want to perform)."
 	        echo ""
 	        sleep 2
 	       	clear
@@ -192,7 +192,7 @@ function info_page()
 # Create Admin account
 function create_admin()
 {
-	LOCAL_ADMIN_FULLNAME="AKQA IT"     # The local admin user's full name
+	LOCAL_ADMIN_FULLNAME="AKQA_IT"     # The local admin user's full name
 	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
 	LOCAL_ADMIN_PASSWORD="C0mr@de$"      # The local admin user's password
 
@@ -203,6 +203,8 @@ function create_admin()
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME UniqueID 1001
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME PrimaryGroupID 81
 	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME NFSHomeDirectory /Local/Users/$LOCAL_ADMIN_SHORTNAME
+	sudo dscl . -create /Users/$LOCAL_ADMIN_SHORTNAME Picture "~/Documents/Assets/logo.png"
+	
 	sudo dscl . -passwd /Users/$LOCAL_ADMIN_SHORTNAME $LOCAL_ADMIN_PASSWORD
 	sudo dscl . -append /Groups/admin GroupMembership $LOCAL_ADMIN_SHORTNAME
 
@@ -210,6 +212,25 @@ function create_admin()
 	echo "Must restart to take effect..."
 	echo ""
 	restart_yes_no
+}
+
+# To enable File Vault
+function file_vault_enable()
+{
+	fdesetup status
+	echo ""
+	echo "Verifying..."
+	echo ""
+	echo "Removing old plist..."
+	echo ""
+	sudo rm -rf /Library/Preferences/com.apple.security.FDERecovery.plist
+	sudo fdesetup enable
+
+	echo ""
+	echo "To finish enabling FileVault, the machine needs to restart..."
+	echo ""
+	restart_yes_no
+
 }
 
 # Function to prompt with options
@@ -228,8 +249,8 @@ function prompt()
 	echo "5. Check for software updates"
 	echo "6. **Update software & Jamf policies"
 	echo "7. Create Admin user"
-	echo "8. Restart computer"
-	echo "9. Clear screen"
+	echo "8. Enable FileVault"
+	echo "9. Restart computer"
 	echo ""
 	echo "10. Exit"
 	echo ""
@@ -260,13 +281,13 @@ function prompt()
 	elif [ $choice -eq 7 ]; then
 		create_admin
 	elif [ $choice -eq 8 ]; then
-		restart_yes_no
+		file_vault_enable
 	elif [ $choice -eq 9 ]; then
-		clear && prompt
+		restart_yes_no
 	elif [ $choice -eq 10 ]; then
 		clear && exit 0
 	else
-		echo "!! Please enter a number between 1-10 (In order to specify the action you want to perform)."
+		echo "!! Please enter a number between 0-10 (In order to specify the action you want to perform)."
 		echo ""
 	fi
 

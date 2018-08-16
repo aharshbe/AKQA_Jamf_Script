@@ -180,8 +180,8 @@ function only_number()
 # Add Info page to Desktop with useful details for new employees
 function info_page()
 {
-	cp -rp Assets ~/Documents 2>/dev/null
-	cp Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
+	cp -rp ./Assets ~/Documents
+	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
 }
 
 # Function to prompt with options

@@ -121,6 +121,7 @@ function check_updates()
 	# Checking for and installing any macOS updates
 	softwareupdate -ai
 	while true; do
+		echo ""
 	    read -p "Do any updates require restart? " yn
 	    case $yn in
 	        [Yy]* ) restart_yes_no; break;;
@@ -140,28 +141,28 @@ function jamf_selfserve()
 		sleep 2
 		open https://jamfpro.na.akqa.net:8443/enroll
 
-		while true; do
-	        read -p "Install self-serve profile? " yn
+    	while true; do
+    		echo ""
+	        read -p "Run updates and troubleshooter? " yn
 	        case $yn in
-	            [Yy]* ) open ~/Downloads/enrollmentProfile.mobileconfig; break;;
+	            [Yy]* ) jamf_troubleshooter && check_updates; break;;
 	            [Nn]* ) break;;
 	            * ) echo "Please answer yes or no.";;
 	        esac
     	done
 
     	while true; do
-	        read -p "Run updates and troubleshooter? " yn
+	        read -p "Open Self-serve? " yn
 	        case $yn in
-	            [Yy]* ) jamf_troubleshooter; check_updates; break;;
+	            [Yy]* ) open /Applications/Self\ Service.app/; break;;
 	            [Nn]* ) break;;
 	            * ) echo "Please answer yes or no.";;
 	        esac
     	done
-
     # clean-up
     rm -rf ~/Downloads/enrollmentProfile.mobileconfig
     osascript -e 'quit app "Safari"'
-
+    osascript -e 'quit app "System Preferences"'
 }
 
 # Restrict input to only be a number
@@ -225,7 +226,7 @@ function prompt()
 		jamf_troubleshooter
 	elif [ $choice -eq 5 ]; then
 		check_updates
-	elif [ $choice -eq 5 ]; then
+	elif [ $choice -eq 6 ]; then
 		jamf_troubleshooter && check_updates
 	elif [ $choice -eq 7 ]; then
 		restart_yes_no

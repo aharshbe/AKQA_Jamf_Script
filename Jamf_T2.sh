@@ -36,7 +36,7 @@ function restart_yes_no()
         read -p "Are you sure you would like to restart? " yn
         case $yn in
             [Yy]* ) echo restarting; sudo shutdown -r now; break;;
-            [Nn]* ) exit;;
+            [Nn]* ) break;;
             * ) echo "Please answer yes or no.";;
         esac
     done
@@ -189,6 +189,26 @@ function info_page()
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
 }
 
+# Create Admin account
+function create_admin()
+{
+	account_name="AKQA IT"
+
+	dscl . -create /Users/$account_name
+	dscl . -create /Users/$account_name UserShell /bin/bash
+	dscl . -create /Users/$account_name RealName "AKQA IT" 
+	dscl . -create /Users/$account_name UniqueID "510"
+	dscl . -create /Users/$account_name PrimaryGroupID 80
+	dscl . -create /Users/$account_name NFSHomeDirectory /Users/$account_name
+	dscl . -passwd /Users/$account_name password
+	dscl . -append /Groups/admin GroupMembership $account_name
+
+	echo ""
+	echo "Must restart to take effect..."
+	echo ""
+	restart_yes_no
+}
+
 # Function to prompt with options
 function prompt()
 {
@@ -196,6 +216,7 @@ function prompt()
 	# Display choices
 	echo ""
 	echo "Choose an option:"
+	echo ""
 	echo "0. Add AKQA Tips + Tricks webpage to Desktop"
 	echo "1. Test internet connection"
 	echo "2. Connect to guest Wifi at AKQA"
@@ -203,13 +224,15 @@ function prompt()
 	echo "4. Run Jamf troubleshooter"
 	echo "5. Check for software updates"
 	echo "6. **Update software & Jamf policies"
-	echo "7. Restart computer"
-	echo "8. Clear screen"
-	echo "9. Exit"
+	echo "7. Create Admin user"
+	echo "8. Restart computer"
+	echo "9. Clear screen"
+	echo ""
+	echo "10. Exit"
 	echo ""
 	
 	# Get user choice
-	echo "-> Enter an option between (0) and (8) ...(9) to exit"
+	echo "-> Enter an option between (0) and (9) ...(10) to exit"
 	echo ""
 
 	read choice
@@ -232,13 +255,15 @@ function prompt()
 	elif [ $choice -eq 6 ]; then
 		jamf_troubleshooter && check_updates
 	elif [ $choice -eq 7 ]; then
-		restart_yes_no
+		create_admin
 	elif [ $choice -eq 8 ]; then
-		clear && prompt
+		restart_yes_no
 	elif [ $choice -eq 9 ]; then
+		clear && prompt
+	elif [ $choice -eq 10 ]; then
 		clear && exit 0
 	else
-		echo "!! Please enter a number between 1-9 (In order to specify the action you want to perform)."
+		echo "!! Please enter a number between 1-10 (In order to specify the action you want to perform)."
 		echo ""
 	fi
 

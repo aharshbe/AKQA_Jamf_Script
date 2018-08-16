@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /bin/bash
 
 # This script was created to help troubleshoot issues realted to Jamf not loading properly
 # Created by Austin Harshberger (2018)

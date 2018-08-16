@@ -182,6 +182,9 @@ function only_number()
 # Add Info page to Desktop with useful details for new employees
 function info_page()
 {
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+	cd $DIR
 	cp -rp ./Assets ~/Documents
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
 }

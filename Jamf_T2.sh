@@ -218,22 +218,26 @@ function create_admin()
 	restart_yes_no
 }
 
-# To enable File Vault
-function file_vault_enable()
+# Check File Vault status
+function check_file_vault()
 {
 	echo "Checking FileVault status..."
 	echo ""
 	fdesetup status
 	echo ""
-
 	while true; do
 	    read -p "Want to enable FileVault? " yn
 	    case $yn in
-	        [Yy]* ) break;;
-	        [Nn]* ) clear; prompt; break;;
+	        [Yy]* ) file_vault_enable; break;;
+	        [Nn]* ) break;;
 	        * ) echo "Please answer yes or no.";;
 	    esac
 	done
+}
+
+# To enable File Vault
+function file_vault_enable()
+{	
 	echo ""
 	echo "Verifying..."
 	echo ""
@@ -246,7 +250,6 @@ function file_vault_enable()
 	echo "To finish enabling FileVault, the machine needs to restart..."
 	echo ""
 	restart_yes_no
-
 }
 
 # Clean up and beautify
@@ -312,7 +315,7 @@ function prompt()
 	elif [ $choice -eq 7 ]; then
 		create_admin
 	elif [ $choice -eq 8 ]; then
-		file_vault_enable
+		check_file_vault
 	elif [ $choice -eq 9 ]; then
 		restart_yes_no
 	elif [ $choice -eq 10 ]; then

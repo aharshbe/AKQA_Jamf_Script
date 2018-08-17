@@ -170,7 +170,7 @@ function only_number()
 {
 	if ! [[ "$choice" =~ ^[0-9]+$ ]]
 	    then
-	        echo "!! Please enter a number between 0-10 (In order to specify the action you want to perform)."
+	        echo "!! Please enter a number between 0-11 (In order to specify the action you want to perform)."
 	        echo ""
 	        sleep 2
 	       	clear
@@ -221,7 +221,19 @@ function create_admin()
 # To enable File Vault
 function file_vault_enable()
 {
+	echo "Checking FileVault status..."
+	echo ""
 	fdesetup status
+	echo ""
+
+	while true; do
+	    read -p "Want to enable FileVault? " yn
+	    case $yn in
+	        [Yy]* ) break;;
+	        [Nn]* ) clear; prompt; break;;
+	        * ) echo "Please answer yes or no.";;
+	    esac
+	done
 	echo ""
 	echo "Verifying..."
 	echo ""
@@ -235,6 +247,20 @@ function file_vault_enable()
 	echo ""
 	restart_yes_no
 
+}
+
+# Clean up and beautify
+function clean_beauty()
+{
+	# Open apps
+	open /Applications/Egnyte\ Desktop\ Sync.app
+	open /Applications/Enterprise\ Connect.app/
+
+	# Clear trash
+	rm -rf ~/.Trash*/
+
+	echo "Done beautifying..."
+	echo ""
 }
 
 # Function to prompt with options
@@ -256,11 +282,12 @@ function prompt()
 	echo "8. Enable FileVault"
 	echo "9. Restart computer"
 	echo ""
-	echo "10. Exit"
+	echo "10. Clean and beautify"
+	echo "11. Exit"
 	echo ""
 	
 	# Get user choice
-	echo "-> Enter an option between (0) and (9) ...(10) to exit"
+	echo "-> Enter an option between (0) and (10) ...(11) to exit"
 	echo ""
 
 	read choice
@@ -289,9 +316,11 @@ function prompt()
 	elif [ $choice -eq 9 ]; then
 		restart_yes_no
 	elif [ $choice -eq 10 ]; then
-		clear && exit 0
+		clean_beauty
+	elif [ $choice -eq 11 ]; then
+		echo "Bye..." && echo "" && sleep 1 && clear && exit 0
 	else
-		echo "!! Please enter a number between 0-10 (In order to specify the action you want to perform)."
+		echo "!! Please enter a number between 0-11 (In order to specify the action you want to perform)."
 		echo ""
 	fi
 

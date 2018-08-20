@@ -87,6 +87,16 @@ function ask_for_sudo()
 	fi
 }
 
+# Function to change to currenty directory
+function change_dir()
+{
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+	cd $DIR
+
+	# Copy assets
+	cp -rp ./Assets ~/Documents
+}
+
 # Function to troubleshoot Jamf
 function jamf_troubleshooter(){
 
@@ -182,16 +192,15 @@ function only_number()
 # Add Info page to Desktop with useful details for new employees
 function info_page()
 {
-	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-
-	cd $DIR
-	cp -rp ./Assets ~/Documents
+	change_dir
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
 }
 
 # Create Admin account
 function create_admin()
 {
+	change_dir
+	
 	LOCAL_ADMIN_FULLNAME="AKQA_IT"     # The local admin user's full name
 	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
 	LOCAL_ADMIN_PASSWORD="C0mr@de$"      # The local admin user's password
@@ -256,8 +265,7 @@ function file_vault_enable()
 # Change Desktop wallpaper
 function change_wall()
 {
-	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-	cd $DIR
+	change_dir
 	cp ./Assets/AKQA_WP.jpg /Library/Desktop\ Pictures/
 	osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/Library/Desktop Pictures/AKQA_WP.jpg"'
 }

@@ -252,6 +252,13 @@ function file_vault_enable()
 	restart_yes_no
 }
 
+
+# Change Desktop wallpaper
+function change_wall()
+{
+	osascript -e ‘tell application “Finder” to set desktop picture to POSIX file “~/Documents/Assets/AKQA_Widescreen.jpg”’
+}
+
 # Clean up and beautify
 function clean_beauty()
 {
@@ -261,6 +268,9 @@ function clean_beauty()
 
 	# Clear trash
 	rm -rf ~/.Trash*/
+
+	# Change wallpaper
+	change_wall
 
 	echo "Done beautifying..."
 	echo ""

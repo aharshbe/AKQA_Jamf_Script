@@ -187,6 +187,8 @@ function info_page()
 	cd $DIR
 	cp -rp ./Assets ~/Documents
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
+
+	cp -rp ./Assets/AKQA_WP.jpg /Library/Desktop\ Pictures/
 }
 
 # Create Admin account
@@ -256,7 +258,7 @@ function file_vault_enable()
 # Change Desktop wallpaper
 function change_wall()
 {
-	osascript -e ‘tell application “Finder” to set desktop picture to POSIX file “~/Documents/Assets/AKQA_Widescreen.jpg”’
+	osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/Library/Desktop Pictures/AKQA_WP.jpg"'
 }
 
 # Clean up and beautify

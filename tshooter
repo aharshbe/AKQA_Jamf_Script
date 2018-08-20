@@ -187,8 +187,6 @@ function info_page()
 	cd $DIR
 	cp -rp ./Assets ~/Documents
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
-
-	cp -rp ./Assets/AKQA_WP.jpg /Library/Desktop\ Pictures/
 }
 
 # Create Admin account
@@ -258,6 +256,9 @@ function file_vault_enable()
 # Change Desktop wallpaper
 function change_wall()
 {
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+	cd $DIR
+	cp ./Assets/AKQA_WP.jpg /Library/Desktop\ Pictures/
 	osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/Library/Desktop Pictures/AKQA_WP.jpg"'
 }
 
@@ -292,7 +293,7 @@ function prompt()
 	echo "3. Enroll in Jamf via self-serve"
 	echo "4. Run Jamf troubleshooter"
 	echo "5. Check for software updates"
-	echo "6. **Update software & Jamf policies"
+	echo "6. Set AKQA wallpaper"
 	echo "7. Create Admin user"
 	echo "8. Enable FileVault"
 	echo "9. Restart computer"
@@ -323,7 +324,7 @@ function prompt()
 	elif [ $choice -eq 5 ]; then
 		check_updates
 	elif [ $choice -eq 6 ]; then
-		jamf_troubleshooter && check_updates
+		change_wall
 	elif [ $choice -eq 7 ]; then
 		create_admin
 	elif [ $choice -eq 8 ]; then

@@ -196,12 +196,13 @@ function info_page()
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
 }
 
+# Function to securely obtain admin password for new admin account
 function get_admin_password()
 {
 	LOCAL_ADMIN_FULLNAME="AKQA_IT"     # The local admin user's full name
 	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
 	
-	echo -n "Enter admin password for ${LOCAL_ADMIN_FULLNAME}: " 
+	echo -n "Enter admin password for new admin account -> ${LOCAL_ADMIN_FULLNAME}: " 
 	
 	read -s LOCAL_ADMIN_PASSWORD  		   # Get the local admin user's password
 	

@@ -196,14 +196,39 @@ function info_page()
 	cp ./Assets/info.html ~/Desktop/AKQA\ Tips\ +\ Tricks.html
 }
 
+function get_admin_password()
+{
+	LOCAL_ADMIN_FULLNAME="AKQA_IT"     # The local admin user's full name
+	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
+	
+	echo -n "Enter admin password for ${LOCAL_ADMIN_FULLNAME}: " 
+	
+	read -s LOCAL_ADMIN_PASSWORD  		   # Get the local admin user's password
+	
+	echo ""
+	echo ""
+	echo "Admin password for ${LOCAL_ADMIN_FULLNAME} is: ${LOCAL_ADMIN_PASSWORD}"
+	
+	sleep 2
+	
+	while true; do
+		echo ""
+	    read -p "Want to change it? " yn
+	    echo ""
+	    case $yn in
+	        [Yy]* ) get_admin_password; break;;
+	        [Nn]* ) break;;
+	        * ) echo "Please answer yes or no.";;
+	    esac
+	done
+
+}
+
 # Create Admin account
 function create_admin()
 {
 	change_dir
-	
-	LOCAL_ADMIN_FULLNAME="AKQA_IT"     # The local admin user's full name
-	LOCAL_ADMIN_SHORTNAME="akqait"     # The local admin user's shortname
-	LOCAL_ADMIN_PASSWORD="C0mr@de$"      # The local admin user's password
+	get_admin_password
 
 	# Add user image
 	sudo cp ~/Documents/Assets/user.png /Library/User\ Pictures

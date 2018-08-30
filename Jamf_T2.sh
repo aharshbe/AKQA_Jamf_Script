@@ -80,11 +80,14 @@ function connect_to_guest()
 # Function to request sudo privileges 
 function ask_for_sudo()
 {
+	echo "Please enter user: ${USER}'s password to start script."
 	# Request user to enter sudo priv
 	if [ $EUID != 0 ]; then
 	    sudo "$0" "$@"
 	    exit $?
 	fi
+
+	clear
 }
 
 # Function to change to currenty directory
@@ -97,13 +100,31 @@ function change_dir()
 	cp -rp ./Assets ~/Documents
 }
 
-# Function to troubleshoot Jamf
-function jamf_troubleshooter(){
+# Function to update JSS inventory
+function jamf_recon()
+{
+	sudo jamf recon &
+	PREV=$!
 
-	# Open Console to view Jamf policies
-	open /private/var/log/jamf.log
+	while kill -0 $PREV 2> /dev/null; do
+		echo "Running Jamf Recon"
+		clear
+	    echo "Running Jamf Recon."
+	    clear
+	    echo "Running Jamf Recon.."
+	    clear
+	    echo "Running Jamf Recon..."
+	done
 
-	# Checking w/ Jamf to make sure all policies are loaded
+	clear
+	echo "Jamf Recon complete."
+
+	sleep 2
+}
+
+function jamf_policy()
+{
+		# Checking w/ Jamf to make sure all policies are loaded
 	sudo jamf policy &
 	PREV=$!
 
@@ -118,10 +139,62 @@ function jamf_troubleshooter(){
 	done
 
 	clear
-	echo "Jamf check complete."
+	echo "Jamf policies up to date."
 
-	# Close console log
-	osascript -e 'quit app "Console"'
+	sleep 2
+
+}
+
+# Function to open Console to view Jamf policies
+function open_console()
+{
+	opened=1
+	if ! [ $choice -eq 4 ]; then
+		open /private/var/log/jamf.log
+	fi
+}
+
+# Function to troubleshoot Jamf
+function jamf_troubleshooter(){
+
+	while true; do
+
+		clear
+		echo "Choose an option:"
+		echo ""
+		echo "0. Enroll in Jamf via self-serve"
+		echo "1. Run Jamf Recon (update JSS inventory w/ device)"
+		echo "2. Run Jamf Policy (check for and update policies on JSS)"
+		echo "3. Both"
+		echo ""
+		echo "4. Exit"
+		echo ""
+		echo "-> Enter an option between (0) and (3) ...(4) to exit"
+		echo ""
+
+		read choice
+		only_number
+		if [ $choice -eq 0 ]; then
+			jamf_selfserve
+		elif [ $choice -eq 1 ]; then
+			open_console && time jamf_recon && sleep 3
+		elif [ $choice -eq 2 ]; then
+			open_console && time jamf_policy  && sleep 3
+		elif [ $choice -eq 3 ]; then
+			open_console && jamf_recon && jamf_policy
+		elif [ $choice -eq 4 ]; then
+			echo ""; echo "Going back to main menu..."; break;
+		else 
+			echo "-> Please choose between (0) and (3) ...(4) to exit"
+		fi
+
+		# Close console log
+		if [ $opened -eq 1 ]; then
+			osascript -e 'quit app "Console"'
+		fi
+		$opened=0
+
+	done
 }
 
 # Function to check for updates
@@ -146,20 +219,10 @@ function jamf_selfserve()
 {
 		echo "Opening enrollment download in browser..."
 		echo ""
-		echo "!! Please consider running update and troubleshooter when download is complete. !!"
+		echo "***Please consider updating and running Jamf Policy when download is complete."
 		echo ""
 		sleep 2
 		open https://jamfpro.na.akqa.net:8443/enroll
-
-    	while true; do
-    		echo ""
-	        read -p "Run updates and troubleshooter? " yn
-	        case $yn in
-	            [Yy]* ) jamf_troubleshooter && check_updates; break;;
-	            [Nn]* ) break;;
-	            * ) echo "Please answer yes or no.";;
-	        esac
-    	done
 
     	while true; do
 	        read -p "Open Self-serve? " yn
@@ -180,7 +243,7 @@ function only_number()
 {
 	if ! [[ "$choice" =~ ^[0-9]+$ ]]
 	    then
-	        echo "!! Please enter a number between 0-11 (In order to specify the action you want to perform)."
+	        echo "***Please enter a number between 0-11 (In order to specify the action you want to perform)."
 	        echo ""
 	        sleep 2
 	       	clear
@@ -324,7 +387,7 @@ function prompt()
 	echo "0. Add AKQA Tips + Tricks webpage to Desktop"
 	echo "1. Test internet connection"
 	echo "2. Connect to guest Wifi at AKQA"
-	echo "3. Enroll in Jamf via self-serve"
+	echo "3. Open self-serve"
 	echo "4. Run Jamf troubleshooter"
 	echo "5. Check for software updates"
 	echo "6. Set AKQA wallpaper"
@@ -352,7 +415,7 @@ function prompt()
 	elif [ $choice -eq 2 ]; then
 		connect_to_guest
 	elif [ $choice -eq 3 ]; then
-		jamf_selfserve
+		open /Applications/Self\ Service.app/
 	elif [ $choice -eq 4 ]; then
 		jamf_troubleshooter
 	elif [ $choice -eq 5 ]; then
@@ -370,13 +433,14 @@ function prompt()
 	elif [ $choice -eq 11 ]; then
 		echo "Bye..." && echo "" && sleep 1 && clear && exit 0
 	else
-		echo "!! Please enter a number between 0-11 (In order to specify the action you want to perform)."
+		echo "***Please enter a number between 0-11 (In order to specify the action you want to perform)."
 		echo ""
 	fi
 
 }
 
 # Start the script
+clear
 
 # Ask for user password
 ask_for_sudo

@@ -145,6 +145,78 @@ function jamf_policy()
 
 }
 
+function standard_dock()
+{
+	/usr/local/bin/dockutil --remove all --allhomes --no-restart
+	/usr/local/bin/dockutil --add '~/Downloads' --no-restart
+	/usr/local/bin/dockutil --add /Applications/Launchpad.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Self\ Service.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Safari.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Google\ Chrome.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Slack.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Keynote.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Skype\ for\ Business.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ Outlook.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ Word.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ Excel.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ PowerPoint.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/System\ Preferences.app
+}
+
+function creative_dock()
+{
+	/usr/local/bin/dockutil --remove all --allhomes --no-restart
+	/usr/local/bin/dockutil --add '~/Downloads' --no-restart
+	/usr/local/bin/dockutil --add /Applications/Launchpad.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Self\ Service.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Safari.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Google\ Chrome.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Slack.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Keynote.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Skype\ for\ Business.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ Outlook.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ Word.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ Excel.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Microsoft\ PowerPoint.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Keynote.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Adobe\ Bridge\ CC\ 2018/Adobe\ Bridge\ CC\ 2018.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Adobe\ Photoshop\ CC\ 2018/Adobe\ Photoshop\ CC\ 2018.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Adobe\ Illustrator\ CC\ 2018/Adobe\ Illustrator.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/Adobe\ InDesign\ CC\ 2018/Adobe\ InDesign\ CC\ 2018.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/FontExplorer\ X\ Pro.app --no-restart
+	/usr/local/bin/dockutil --add /Applications/System\ Preferences.app
+}
+
+function set_dock()
+{
+
+	while true; do
+
+			clear
+			echo "Choose an option:"
+			echo ""
+			echo "0. Standard Dock"
+			echo "1. Creative Dock"
+			echo ""
+			echo "2. Exit"
+			echo ""
+			echo "-> Enter either(0) or (1) ...(2) to exit"
+			echo ""
+
+			read choice
+			only_number
+			if [ $choice -eq 0 ]; then
+				standard_dock
+			elif [ $choice -eq 1 ]; then
+				creative_dock
+			elif [ $choice -eq 2 ]; then
+				echo ""; echo "Going back to main menu..."; break;
+			else 
+				echo "-> Please choose either (0) or (1) ...(2) to exit"
+			fi
+	done
+}
+
 # Function to open Console to view Jamf policies
 function open_console()
 {
@@ -217,21 +289,24 @@ function check_updates()
 # Function to download self-serve profile from internet + run policy updates
 function jamf_selfserve()
 {
-		echo "Opening enrollment download in browser..."
-		echo ""
-		echo "***Please consider updating and running Jamf Policy when download is complete."
-		echo ""
-		sleep 2
-		open https://jamfpro.na.akqa.net:8443/enroll
+	echo "Opening enrollment download in browser..."
+	echo ""
+	echo "***Please consider updating and running Jamf Policy when download is complete."
+	echo ""
+	sleep 2
+	open https://jamfpro.na.akqa.net:8443/enroll
 
-    	while true; do
-	        read -p "Open Self-serve? " yn
-	        case $yn in
-	            [Yy]* ) open /Applications/Self\ Service.app/; break;;
-	            [Nn]* ) break;;
-	            * ) echo "Please answer yes or no.";;
-	        esac
-    	done
+	while true; do
+		echo ""
+	    read -p "Finished installing MDM profile? " yn
+	    echo ""
+	    case $yn in
+	        [Yy]* ) break;;
+	        [Nn]* ) sleep 3;;
+	        * ) echo "Please answer yes or no.";;
+	    esac
+	done
+
     # clean-up
     rm -rf ~/Downloads/enrollmentProfile.mobileconfig
     osascript -e 'quit app "Safari"'
@@ -363,7 +438,6 @@ function change_wall()
 function clean_beauty()
 {
 	# Open apps
-	open /Applications/Egnyte\ Desktop\ Sync.app
 	open /Applications/Enterprise\ Connect.app/
 
 	# Clear trash
@@ -391,16 +465,17 @@ function prompt()
 	echo "4. Run Jamf troubleshooter"
 	echo "5. Check for software updates"
 	echo "6. Set AKQA wallpaper"
-	echo "7. Create Admin user"
-	echo "8. Enable FileVault"
-	echo "9. Restart computer"
+	echo "7. Configure Dock"
+	echo "8. Create Admin user"
+	echo "9. Enable FileVault"
 	echo ""
-	echo "10. Clean and beautify"
-	echo "11. Exit"
+	echo "10. Restart computer"
+	echo "11. Clean and beautify"
+	echo "12. Exit"
 	echo ""
 	
 	# Get user choice
-	echo "-> Enter an option between (0) and (10) ...(11) to exit"
+	echo "-> Enter an option between (0) and (11) ...(12) to exit"
 	echo ""
 
 	read choice
@@ -423,17 +498,19 @@ function prompt()
 	elif [ $choice -eq 6 ]; then
 		change_wall
 	elif [ $choice -eq 7 ]; then
-		create_admin
+		set_dock
 	elif [ $choice -eq 8 ]; then
-		check_file_vault
+		create_admin
 	elif [ $choice -eq 9 ]; then
-		restart_yes_no
+		check_file_vault
 	elif [ $choice -eq 10 ]; then
-		clean_beauty
+		restart_yes_no
 	elif [ $choice -eq 11 ]; then
+		clean_beauty
+	elif [ $choice -eq 12 ]; then
 		echo "Bye..." && echo "" && sleep 1 && clear && exit 0
 	else
-		echo "***Please enter a number between 0-11 (In order to specify the action you want to perform)."
+		echo "***Please enter a number between 0-12 (In order to specify the action you want to perform)."
 		echo ""
 	fi
 
